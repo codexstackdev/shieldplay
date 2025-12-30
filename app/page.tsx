@@ -22,6 +22,9 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { DownloadModal } from "./components/DownloadModal";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import PopunderAd from "./components/PopunderAd";
+import NativeBanner from "./components/NativeBanner";
+import SocialBar from "./components/SocialBar";
 
 interface gameProps {
   gamename: string;
@@ -41,7 +44,10 @@ export default function Page() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedMod, setSelectedMod] = useState<{ link: string; gamename: string } | null>(null);
+  const [selectedMod, setSelectedMod] = useState<{
+    link: string;
+    gamename: string;
+  } | null>(null);
 
   useEffect(() => {
     const verifyToken = async () => {
@@ -78,6 +84,7 @@ export default function Page() {
 
   return (
     <main className="min-h-screen bg-background text-foreground">
+      <PopunderAd />
       <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
           <h1 className="text-lg font-semibold tracking-wide">SHIELDPLAY</h1>
@@ -94,7 +101,9 @@ export default function Page() {
       </header>
 
       <section className="mx-auto max-w-7xl px-4 py-12 text-center">
-        <h2 className="text-3xl font-bold sm:text-4xl">Safe & Tested Game Mods</h2>
+        <h2 className="text-3xl font-bold sm:text-4xl">
+          Safe & Tested Game Mods
+        </h2>
         <p className="mx-auto mt-4 max-w-xl text-sm text-muted-foreground">
           Every mod is reviewed before becoming publicly downloadable.
         </p>
@@ -102,7 +111,10 @@ export default function Page() {
 
       <section className="mx-auto max-w-7xl px-4 pb-10">
         <div className="relative">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
+          <Search
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
+            size={18}
+          />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -112,12 +124,18 @@ export default function Page() {
         </div>
       </section>
 
+      <SocialBar scriptSrc="https://avouchlawsrethink.com/ef/34/f9/ef34f90da485232ea39a90519d47dd18.js" />
+
+
       <section className="mx-auto max-w-7xl px-4 pb-20">
         {filtered.length === 0 ? (
           <div className="flex min-h-[40vh] flex-col items-center justify-center text-center px-4">
-            <h1 className="text-3xl font-bold text-primary mb-2">No Games Found</h1>
+            <h1 className="text-3xl font-bold text-primary mb-2">
+              No Games Found
+            </h1>
             <p className="text-muted-foreground max-w-sm">
-              Sorry, we couldn’t find any games matching your search. Try another search or check back later!
+              Sorry, we couldn’t find any games matching your search. Try
+              another search or check back later!
             </p>
           </div>
         ) : (
@@ -128,7 +146,11 @@ export default function Page() {
                 className="overflow-hidden rounded-2xl border bg-card transition hover:-translate-y-1 hover:shadow-xl"
               >
                 <div className="relative aspect-video">
-                  <img src={mod.gameimage} alt={mod.gamename} className="absolute pointer-events-none inset-0 h-full w-full object-cover" />
+                  <img
+                    src={mod.gameimage}
+                    alt={mod.gamename}
+                    className="absolute pointer-events-none inset-0 h-full w-full object-cover"
+                  />
 
                   {mod.status === "tested" && (
                     <Badge className="absolute right-3 top-3 rounded-full bg-green-600 px-3 py-1 text-xs text-white flex gap-1">
@@ -158,10 +180,18 @@ export default function Page() {
 
                   <div className="flex items-center gap-2 mb-2">
                     <Avatar>
-                      <AvatarImage src={mod.uploader.profile} alt="profile" className="object-cover pointer-events-none" />
-                      <AvatarFallback>{mod.uploader.userName.slice(0, 1).toUpperCase()}</AvatarFallback>
+                      <AvatarImage
+                        src={mod.uploader.profile}
+                        alt="profile"
+                        className="object-cover pointer-events-none"
+                      />
+                      <AvatarFallback>
+                        {mod.uploader.userName.slice(0, 1).toUpperCase()}
+                      </AvatarFallback>
                     </Avatar>
-                    <span className="text-xs text-muted-foreground">Uploaded by {mod.uploader.userName}</span>
+                    <span className="text-xs text-muted-foreground">
+                      Uploaded by {mod.uploader.userName}
+                    </span>
                   </div>
 
                   <h3 className="text-lg font-semibold">{mod.gamename}</h3>
@@ -180,7 +210,8 @@ export default function Page() {
                       <ShieldAlertIcon className="h-4 w-4" />
                       <AlertTitle>Game Outdated</AlertTitle>
                       <AlertDescription>
-                        This mod is currently unavailable. Please wait for the new update.
+                        This mod is currently unavailable. Please wait for the
+                        new update.
                       </AlertDescription>
                     </Alert>
                   )}
@@ -226,6 +257,11 @@ export default function Page() {
           gamename={selectedMod.gamename}
         />
       )}
+
+      <NativeBanner
+        scriptSrc="https://avouchlawsrethink.com/d4b62589560d6a5fa29ada9490597ea5/invoke.js"
+        containerId="container-d4b62589560d6a5fa29ada9490597ea5"
+      />
 
       <footer className="border-t px-4 py-6 text-center text-xs text-muted-foreground">
         Mods are created by independent developers. Use at your own risk.
