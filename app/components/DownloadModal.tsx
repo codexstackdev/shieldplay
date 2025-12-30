@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { DownloadCloud } from "lucide-react";
 import { useTheme } from "next-themes";
+import BannerAd from "./BannerAd";
 
 interface DownloadModalProps {
   open: boolean;
@@ -21,6 +22,7 @@ export const DownloadModal = ({
   previewUrl,
 }: DownloadModalProps) => {
   const [showAd, setShowAd] = useState(true);
+  const [countdown, setCountdown] = useState(20);
   const { theme } = useTheme();
 
   const handleDownload = () => {
@@ -32,6 +34,16 @@ export const DownloadModal = ({
   };
 
   const buttonTextColor = theme === "light" ? "text-black" : "text-white";
+
+  useEffect(() => {
+    if (!showAd) return;
+    if (countdown <= 0) {
+      setShowAd(false);
+      return;
+    }
+    const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [countdown, showAd]);
 
   return (
     <AnimatePresence>
@@ -54,25 +66,12 @@ export const DownloadModal = ({
                   Sponsored Ad
                 </h2>
                 <p className="text-sm sm:text-base text-gray-300 mb-4">
-                  Please watch this ad to unlock your download.
+                  Please wait {countdown} second{countdown !== 1 && "s"} to unlock your download.
                 </p>
 
-                <div className="w-full h-52 sm:h-64 bg-gray-800 rounded-xl flex items-center justify-center text-gray-400 text-lg mb-4 shadow-inner">
-                  Adsterra Ad
+                <div className="w-full h-52 sm:h-64 mb-4 flex items-center justify-center bg-gray-800 rounded-xl text-gray-400">
+                  <BannerAd adKey="b38a8e1500bac033d832bd83fbbcfe45" width={300} height={250} />
                 </div>
-
-                <div className="relative w-full h-3 rounded-full bg-gray-700 overflow-hidden mb-2 shadow-inner">
-                  <motion.div
-                    className="absolute h-3 bg-linear-to-r from-purple-500 via-pink-500 to-orange-400 rounded-full"
-                    initial={{ width: 0 }}
-                    animate={{ width: "100%" }}
-                    transition={{ duration: 5 }}
-                    onAnimationComplete={() => setShowAd(false)}
-                  />
-                </div>
-                <p className="text-xs text-gray-400 uppercase tracking-widest">
-                  Loading...
-                </p>
               </div>
             ) : (
               <div className="flex flex-col items-center w-full text-center">
@@ -95,7 +94,6 @@ export const DownloadModal = ({
                   <span className="font-semibold text-gray-50">{gamename}</span>.
                 </p>
 
-                {/* Real download button */}
                 <motion.button
                   onClick={handleDownload}
                   whileHover={{ scale: 1.05 }}
@@ -106,14 +104,14 @@ export const DownloadModal = ({
                   Download {gamename}
                 </motion.button>
 
-                {/* Ad / smartlink buttons */}
                 <a
                   href="https://avouchlawsrethink.com/hp09b6k7?key=5091bc8aa59ff3af15e6fee20a2ce1f8"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-3 rounded-2xl bg-linear-to-r from-purple-500 via-pink-500 to-orange-400 px-8 py-3 text-base font-semibold text-white shadow-lg hover:shadow-xl transition mb-2"
                 >
-                  Download Mirror
+                  <DownloadCloud size={20} />
+                  Download {gamename} 1
                 </a>
 
                 <a
@@ -122,7 +120,8 @@ export const DownloadModal = ({
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-3 rounded-2xl bg-linear-to-r from-purple-500 via-pink-500 to-orange-400 px-8 py-3 text-base font-semibold text-white shadow-lg hover:shadow-xl transition"
                 >
-                  Download Mirror
+                  <DownloadCloud size={20} />
+                  Download {gamename} 2
                 </a>
               </div>
             )}
