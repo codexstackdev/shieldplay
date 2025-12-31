@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server";
 
 const ALLOWED_IDS = [
   "695282db7390e96c6251430b",
+  "69548b5f22b36495cbcfe1e0",
 ];
 
 export function middleware(request: NextRequest) {
