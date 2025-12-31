@@ -265,6 +265,7 @@ const Page = () => {
 
             <button
               onClick={handleUpload}
+              disabled={loading}
               className="flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:opacity-90 transition"
             >
               {loading ? (

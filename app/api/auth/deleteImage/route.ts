@@ -17,7 +17,7 @@ export async function DELETE(req: NextRequest) {
       {
         auth: {
           username: process.env.PRIVATE_KEY as string,
-          password: "Kenshiejee123*",
+          password: process.env.PASSWORD as string,
         },
         headers: {
           Accept: "application/json",
