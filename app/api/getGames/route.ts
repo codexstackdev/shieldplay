@@ -1,6 +1,8 @@
 import { connectDB } from "@/app/lib/utils";
 import gameModel from "@/app/models/gamesSchema";
 import { NextRequest, NextResponse } from "next/server";
+import "@/app/models/userSchema";
+
 
 
 export async function GET(req:NextRequest){

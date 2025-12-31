@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import "./userSchema";
 
 const gameSchema = new mongoose.Schema(
   {
