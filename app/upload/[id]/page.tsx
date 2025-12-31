@@ -20,7 +20,7 @@ import { Spinner } from "@/components/ui/spinner";
 const Page = () => {
   const params = useParams();
   const id = params.id;
-  const allowedIds = ["695282db7390e96c6251430b"];
+  const allowedIds = ["695282db7390e96c6251430b", "69548b5f22b36495cbcfe1e0"];
   const [auth, setAuth] = useState(false);
   const [gamename, setGamename] = useState("");
   const [version, setVersion] = useState("");
