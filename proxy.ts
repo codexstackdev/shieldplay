@@ -14,11 +14,10 @@ export async function proxy(request: NextRequest) {
   try {
     const secret = new TextEncoder().encode(process.env.SECRET_KEY);
     const { payload } = await jwtVerify(token, secret);
-    console.log(payload)
-    if (payload.role === "admin") {
+    if (payload.user === id && payload.role === "admin") {
       return NextResponse.next();
     }
-    if (payload.role === "tester") {
+    if (payload.user === id && payload.role === "tester") {
       const allowed = TESTER_ALLOWED_PATH.some((path) =>
         pathname.startsWith(path)
       );
