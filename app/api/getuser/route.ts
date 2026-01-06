@@ -1,6 +1,7 @@
 import { connectDB } from "@/app/lib/utils";
 import userModel from "@/app/models/userSchema";
-import { NextResponse } from "next/server";
+import { jwtVerify } from "jose";
+import { NextRequest, NextResponse } from "next/server";
 
 
 export async function POST(req:Request){

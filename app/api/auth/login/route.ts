@@ -29,7 +29,7 @@ export async function POST(req: Request) {
       success: true,
       message: "Logged in successfully",
     });
-    const token = jwt.sign({ user: user._id }, process.env.SECRET_KEY, { expiresIn: "2D"});
+    const token = jwt.sign({ user: user._id, role:user.role}, process.env.SECRET_KEY, { expiresIn: "2D"});
     response.cookies.set({
       name: "token",
       value: token,

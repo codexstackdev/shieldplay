@@ -1,6 +1,5 @@
 "use client";
 
-import UnauthorizedPage from "@/app/components/unauthorizedPage";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Upload, ImagePlus, CheckCircle, VerifiedIcon, X } from "lucide-react";
@@ -11,7 +10,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { upload } from "@imagekit/next";
 import { deleteImage, uploadGame } from "@/app/hooks/action";
@@ -20,8 +18,6 @@ import { Spinner } from "@/components/ui/spinner";
 const Page = () => {
   const params = useParams();
   const id = params.id;
-  const allowedIds = ["695282db7390e96c6251430b", "69548b5f22b36495cbcfe1e0"];
-  const [auth, setAuth] = useState(false);
   const [gamename, setGamename] = useState("");
   const [version, setVersion] = useState("");
   const [creator, setCreator] = useState("");
@@ -37,10 +33,6 @@ const Page = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (allowedIds.includes(id as string)) setAuth(true);
-  }, [id]);
-
-  useEffect(() => {
     setFeatures(
       featuresInput
         .split(",")
@@ -49,8 +41,6 @@ const Page = () => {
         .map((f) => f[0].toUpperCase() + f.slice(1))
     );
   }, [featuresInput]);
-
-  if (!auth) return <UnauthorizedPage />;
 
   const authenticator = async () => {
     try {
@@ -67,6 +57,7 @@ const Page = () => {
   };
 
   const handleUpload = async () => {
+    if(!gamename) return toast.info("please complete all the fields");
     try {
       const authparams = await authenticator();
       const abortController = new AbortController();

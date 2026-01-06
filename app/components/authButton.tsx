@@ -1,6 +1,6 @@
 "use client";
 
-import { User, Upload, LogOut, PlayCircle } from "lucide-react";
+import { User, Upload, LogOut, PlayCircle, Lock } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -19,7 +19,6 @@ const AuthButton = ({ id }: { id?: string }) => {
   const [user, setUser] = useState<UserProp | null>(null);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const allowedIds = ["695282db7390e96c6251430b"];
 
   useEffect(() => {
     if (!id) return;
@@ -82,25 +81,33 @@ const AuthButton = ({ id }: { id?: string }) => {
 
       {open && (
         <div className="absolute right-0 mt-2 w-48 rounded-xl border bg-background shadow-lg overflow-hidden z-50">
-
           {user.role === "admin" && (
-            <button
+            <>
+              <button
+                onClick={() => router.push(`/admin/${user._id}`)}
+                className="flex w-full items-center gap-2 px-4 py-3 text-sm hover:bg-accent"
+              >
+                <Lock size={16} />
+                Admin
+              </button>
+              <button
                 onClick={() => router.push(`/upload/${user._id}`)}
                 className="flex w-full items-center gap-2 px-4 py-3 text-sm hover:bg-accent"
               >
                 <Upload size={16} />
                 Upload Mod
               </button>
+            </>
           )}
           {user.role === "admin" || user.role === "tester" ? (
-                <button
-                onClick={() => router.push(`/test/${user._id}`)}
-                className="flex w-full items-center gap-2 px-4 py-3 text-sm hover:bg-accent"
-              >
-                <PlayCircle size={16} />
-                Test Mod
-              </button>
-              ) : null}
+            <button
+              onClick={() => router.push(`/test/${user._id}`)}
+              className="flex w-full items-center gap-2 px-4 py-3 text-sm hover:bg-accent"
+            >
+              <PlayCircle size={16} />
+              Test Mod
+            </button>
+          ) : null}
 
           <button
             onClick={handleLogout}

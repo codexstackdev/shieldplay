@@ -107,3 +107,51 @@ export async function updateGame(id:string, status:string){
         return {success: false, message: handleError(error)}
     }
 }
+
+
+export async function getResources(){
+    try {
+        const res = await fetch("/api/getRes", {
+            method: "GET",
+            headers: {'Content-Type': 'application/json'},
+        });
+        const data = await res.json();
+        if(!res.ok) throw new Error(data.message);
+        if(res.ok) return data;
+    } catch (error) {
+        return {success: false, message: handleError(error)}
+    }
+}
+
+
+export async function changeRole(id:string, role: "admin" | "user" | "tester"){
+    try {
+        const res = await fetch("/api/admin/users/updateUser", {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({id, role})
+        });
+
+        const data = await res.json();
+        if(!res.ok) throw new Error(data.message);
+        if(res.ok) return data;
+    } catch (error) {
+        return {success: false, message: handleError(error)}
+    }
+}
+
+export async function changeStatusGame(id:string, status: "tested" | "untested" | "outdated" | "onreview"){
+    try {
+        const res = await fetch("/api/admin/game/updateGame", {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({id, status})
+        });
+
+        const data = await res.json();
+        if(!res.ok) throw new Error(data.message);
+        if(res.ok) return data;
+    } catch (error) {
+        return {success: false, message: handleError(error)}
+    }
+}
