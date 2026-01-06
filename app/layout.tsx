@@ -36,7 +36,7 @@ export default function RootLayout({
           enableSystem
         >
           <Toaster/>
-          {/* <DisableDevtools/> */}
+          <DisableDevtools/>
           {children}
         </ThemeProvider>
       </body>
