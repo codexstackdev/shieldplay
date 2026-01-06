@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getUser, logout } from "../hooks/action";
 import { toast } from "sonner";
+import { Spinner } from "@/components/ui/spinner";
 
 interface UserProp {
   userName: string;
@@ -19,13 +20,22 @@ const AuthButton = ({ id }: { id?: string }) => {
   const [user, setUser] = useState<UserProp | null>(null);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!id) return;
 
     const getData = async () => {
       const data = await getUser(id);
-      if (data.success) setUser(data.user);
+      setLoading(true);
+      try {
+        if (data.success) setUser(data.user);
+      } catch (error) {
+        setLoading(false);
+      }
+      finally{
+        setLoading(false);
+      }
     };
 
     getData();
@@ -52,11 +62,14 @@ const AuthButton = ({ id }: { id?: string }) => {
   if (!user) {
     return (
       <button
+        disabled={loading}
         onClick={() => router.push("/rip/auth")}
         className="rounded-lg border p-2 hover:bg-accent flex items-center gap-2"
       >
+        {loading ? <Spinner/> : <>
         <User size={18} />
         <span className="font-semibold">Login</span>
+        </>}
       </button>
     );
   }
