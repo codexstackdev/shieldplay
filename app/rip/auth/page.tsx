@@ -7,7 +7,6 @@ import { toast } from "sonner";
 import { upload } from "@imagekit/next";
 import { Progress } from "@/components/ui/progress";
 import { deleteImage, login, register } from "@/app/hooks/action";
-import axios from "axios";
 import { Spinner } from "@/components/ui/spinner";
 import { useRouter } from "next/navigation";
 

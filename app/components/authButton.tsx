@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getUser, logout } from "../hooks/action";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
+import useSetuser from "../store";
 
 interface UserProp {
   userName: string;
@@ -17,19 +18,23 @@ interface UserProp {
 
 const AuthButton = ({ id }: { id?: string }) => {
   const router = useRouter();
-  const [user, setUser] = useState<UserProp | null>(null);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
-
+  const cachedUser = useSetuser((s) => s.setUser);
+  const removeUser = useSetuser((s) => s.clearUser);
+  const user = useSetuser((e) => e.user);
   useEffect(() => {
     if (!id) return;
 
     const getData = async () => {
+      if(user) return;
       const data = await getUser(id);
       setLoading(true);
       try {
-        if (data.success) setUser(data.user);
+        if (data.success){
+          cachedUser(data.user);
+        };
       } catch (error) {
         setLoading(false);
       }
@@ -55,11 +60,11 @@ const AuthButton = ({ id }: { id?: string }) => {
     const data = await logout();
     if (data.success) {
       toast.success(data.message);
-      setUser(null);
+      removeUser();
     }
   };
 
-  if (!user) {
+  if (user === null) {
     return (
       <button
         disabled={loading}
@@ -82,19 +87,19 @@ const AuthButton = ({ id }: { id?: string }) => {
       >
         <Avatar className="h-8 w-8">
           <AvatarImage
-            src={user.profile}
+            src={user?.profile}
             className="object-cover pointer-events-none"
           />
           <AvatarFallback>
-            {user.userName.slice(0, 1).toUpperCase()}
+            {user?.userName.slice(0, 1).toUpperCase()}
           </AvatarFallback>
         </Avatar>
-        <span className="hidden sm:block">{user.userName}</span>
+        <span className="hidden sm:block">{user?.userName}</span>
       </button>
 
       {open && (
         <div className="absolute right-0 mt-2 w-48 rounded-xl border bg-background shadow-lg overflow-hidden z-50">
-          {user.role === "admin" && (
+          {user?.role === "admin" && (
             <>
               <button
                 onClick={() => router.push(`/admin/${user._id}`)}
@@ -112,7 +117,7 @@ const AuthButton = ({ id }: { id?: string }) => {
               </button>
             </>
           )}
-          {user.role === "admin" || user.role === "tester" ? (
+          {user?.role === "admin" || user?.role === "tester" ? (
             <button
               onClick={() => router.push(`/test/${user._id}`)}
               className="flex w-full items-center gap-2 px-4 py-3 text-sm hover:bg-accent"
