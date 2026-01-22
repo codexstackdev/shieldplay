@@ -175,7 +175,7 @@ export default function Page() {
                       <User size={14} />
                       {mod.creator}
                     </div>
-                    <span>{mod.version}</span>
+                    <span>{!mod.version[0].toLowerCase().includes("v") ? `V${mod.version}` : mod.version}</span>
                   </div>
 
                   <div className="flex items-center gap-2 mb-2">
